@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Libratory</string>
+    <!--Labels for editText input fields -->
+    <string name="book_title">Book Title:</string>
+    <string name="author">Author:</string>
+    <string name="quantity">Quantity:</string>
+    <string name="phone_number">Phone Number:</string>
+    <string name="supplier">Supplier:</string>
+    <string name="price">Price:</string>
+    <!--Strings for supplier Spinner dropdown options-->
+    <string name="supplier_other">Other</string>
+    <string name="supplier_ebay">Ebay</string>
+    <string name="supplier_amazon">Amazon</string>
+    <string name="supplier_abes">Abe\'s Books</string>
+    <string name="menu_action_save">Save</string>
+
+</resources>
