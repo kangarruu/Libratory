@@ -14,4 +14,8 @@
     <string name="supplier_abes">Abe\'s Books</string>
     <string name="menu_action_save">Save</string>
 
+    <!--Strings for Toast messages-->
+    <string name="editor_save_error_toast">Unable to save book</string>
+    <string name="editor_book_saved_toast">Book saved</string>
+
 </resources>
