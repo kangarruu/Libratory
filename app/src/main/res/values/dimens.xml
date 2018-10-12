@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Margin around the floating action button in MainActivity -->
+    <dimen name="fab_margin">16dp</dimen>
+    <!-- Custom size of image in FAB in MainActivity -->
+    <dimen name="design_fab_image_size" tools:override="true">28dp</dimen>
+    <!-- Empty view image margin in MainActivity -->
+    <dimen name="main_image_margin_top">16dp</dimen>
+</resources>

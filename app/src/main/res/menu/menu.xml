@@ -3,9 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_save"
-        android:title="@string/menu_action_save"
+        android:id="@+id/menu_save"
         android:icon="@drawable/ic_done"
+        android:title="@string/menu_action_dummy_data"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_insert_dummy_data"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/menu_action_dummy_data"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_delete_all"
+        android:title="@string/menu_action_delete_books"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/menu_enter_new_book"
+        android:title="@string/menu_action_new_book"
+        app:showAsAction="never" />
+
 
 </menu>

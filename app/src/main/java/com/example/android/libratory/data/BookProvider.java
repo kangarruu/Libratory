@@ -79,6 +79,11 @@ public class BookProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("UriMatcher error querying URI: " + uri);
         }
+
+        //Sets notification URI for any Cursor returned by query().
+        // Notifies if changes have been made so that the Cursor could  be updated
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
         return cursor;
     }
 
@@ -132,6 +137,11 @@ public class BookProvider extends ContentProvider {
             Log.e(LOG_TAG, "Error inserting book into database for " + uri);
             return null;
         }
+
+        //Notify all listeners that the data has changed in this URI
+        getContext().getContentResolver().notifyChange(uri, null);
+
+
         //Append the new row id returned by the database to the end of the contentUri and return the new Uri
         return ContentUris.withAppendedId(uri, newBookId);
     }
@@ -202,7 +212,13 @@ public class BookProvider extends ContentProvider {
         //Otherwise, get a writeable database, run the update and return the number of rows updated.
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
-        return database.update(BookEntry.TABLE_NAME, values, selection, selectionArgs);
+        int rowsUpdated = database.update(BookEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        if (rowsUpdated != 0) {
+            // If  changes have been made notify all listeners that the data has changed in this URI
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
     }
 
     @Override
@@ -210,22 +226,33 @@ public class BookProvider extends ContentProvider {
 
         //See if the UriMatcher can match the input Uri to a specific path accepted by the BookProvider
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        int rowsDeleted;
 
         final int match = sUriMatcher.match(uri);
         switch (match) {
             //If the Uri is matched to the whole table, delete the rows that qualify for the given inputs
             case BOOKS:
-                return database.delete(BookEntry.TABLE_NAME, selection, selectionArgs);
-            //If the Uri is matched to specific row, parse the id at the end of the Uri and set as the selectionArgs
-            //delete the rows that qualify for the given inputs
+                rowsDeleted = database.delete(BookEntry.TABLE_NAME, selection, selectionArgs);
+                //If the Uri is matched to specific row, parse the id at the end of the Uri and set as the selectionArgs
+                //delete the rows that qualify for the given inputs
+                break;
             case BOOK_ID:
                 selection = BookEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                return database.delete(BookEntry.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = database.delete(BookEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             default:
                 throw new IllegalArgumentException("Unable to delete URI: " + uri);
         }
+
+        if (rowsDeleted != 0) {
+            // If  changes have been made notify all listeners that the data has changed in this URI
+            getContext().getContentResolver().notifyChange(uri, null);
+
+        }
+        return rowsDeleted;
     }
+
 
     @Nullable
     @Override

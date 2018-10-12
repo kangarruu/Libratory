@@ -1,112 +1,76 @@
 package com.example.android.libratory;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.android.libratory.data.BookContract.BookEntry;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    //Declare the views containing user input
-    private EditText mBookTitle;
-    private EditText mBookAuthor;
-    private EditText mPrice;
-    private EditText mQuantity;
-    private Spinner mSupplier;
-    private TextView mSummaryView;
+    BookCursorAdapter cursorAdapter;
+    //Required param that identifies the CursorLoader. Can be any int.
+    private static final int URL_LOADER = 0;
 
-    //Declare the supplier selection to be assigned to constants in BookContract.java
-    private int mSelectedSupplier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //locate the Views containing UserInput via findViewById
-        mBookTitle = (EditText) findViewById(R.id.title_edit_view);
-        mBookAuthor = (EditText) findViewById(R.id.author_edit_view);
-        mPrice = (EditText) findViewById(R.id.price_edit_view);
-        mQuantity = (EditText) findViewById(R.id.quantity_edit_view);
-        mSupplier = (Spinner) findViewById(R.id.supplier_spinner);
-        mSummaryView = (TextView) findViewById(R.id.summary_view);
-
-        setupSpinner();
-
-        mSummaryView.setText("Current Summary: \n" +
-                BookEntry._ID + " | " +
-                BookEntry.COLUMN_PRODUCT_NAME + " | " +
-                BookEntry.COLUMN_BOOK_AUTHOR + " | " +
-                BookEntry.COLUMN_SUPPLIER);
-    }
-
-    //Set up the Spinner and the display options for the book supplier
-    private void setupSpinner() {
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.supplier_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSupplier.setAdapter(adapter);
-
-        //Get the user input for the item selected from the Spinner, and set it to the constants stored in BookContract.java
-        mSupplier.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //Set up FAB to open EditorActivity
+        FloatingActionButton fab = findViewById(R.id.main_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String supplierSelected = (String) parent.getItemAtPosition(position);
-                if (supplierSelected.equals(getString(R.string.supplier_amazon))) {
-                    mSelectedSupplier = BookEntry.SUPPLIER_AMAZON;
-                } else if (supplierSelected.equals(getString(R.string.supplier_ebay))) {
-                    mSelectedSupplier = BookEntry.SUPPLIER_EBAY;
-                } else if (supplierSelected.equals(getString(R.string.supplier_abes))) {
-                    mSelectedSupplier = BookEntry.SUPPLIER_ABES_BOOKS;
-                } else {
-                    mSelectedSupplier = BookEntry.SUPPLIER_ATYPICAL;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                mSelectedSupplier = BookEntry.SUPPLIER_ATYPICAL;
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                startActivity(intent);
             }
         });
+
+        //Locate the ListView and emptyView via id. set the empty view on the listView
+        ListView bookListView = findViewById(R.id.book_list_view);
+        View emptyView = findViewById(R.id.empty_view_parent);
+        bookListView.setEmptyView(emptyView);
+
+        //Set up the CursorAdapter to display items in the ListView
+        cursorAdapter = new BookCursorAdapter(this, null, 0);
+        bookListView.setAdapter(cursorAdapter);
+
+        getSupportLoaderManager().initLoader(URL_LOADER, null, this);
     }
 
-    private void insertBook() {
-        //Get user info from the edit fields and save them as a new book entry
-        String titleString = mBookTitle.getText().toString().trim();
-        String authorString = mBookAuthor.getText().toString().trim();
-        String priceString = mPrice.getText().toString().trim();
-        double priceInt = Double.parseDouble(priceString);
-        String quantityString = mQuantity.getText().toString().trim();
-        int quantityInt = Integer.parseInt(quantityString);
-
+    private void insertDummyData() {
         //Create a ContentValues object, insert values into it and then insert the object into the db
         ContentValues values = new ContentValues();
-        values.put(BookEntry.COLUMN_PRODUCT_NAME, titleString);
-        values.put(BookEntry.COLUMN_BOOK_AUTHOR, authorString);
-        values.put(BookEntry.COLUMN_PRICE, priceInt);
-        values.put(BookEntry.COLUMN_QUANTITY, quantityInt);
-        values.put(BookEntry.COLUMN_SUPPLIER, mSelectedSupplier);
+        values.put(BookEntry.COLUMN_PRODUCT_NAME, "This Dark Duet");
+        values.put(BookEntry.COLUMN_BOOK_AUTHOR, "V.E. Schwab");
+        values.put(BookEntry.COLUMN_PRICE, 27.99);
+        values.put(BookEntry.COLUMN_QUANTITY, 23);
+        values.put(BookEntry.COLUMN_SUPPLIER, 0);
 
         Uri newBookUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
         if (newBookUri == null) {
             Toast.makeText(MainActivity.this, R.string.editor_save_error_toast, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(MainActivity.this, R.string.editor_book_saved_toast, Toast.LENGTH_SHORT).show();
-
         }
 
     }
@@ -118,52 +82,69 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    //When save option is clicked in the menu, add book entry to the db
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_save) {
-            insertBook();
-            displayDatabaseInfo();
-            return true;
+        switch (id) {
+            case R.id.menu_save:
+                insertDummyData();
+                return true;
+            case R.id.menu_insert_dummy_data:
+                insertDummyData();
+                return true;
+            case R.id.menu_delete_all:
+                clearData();
+                return true;
+            case R.id.menu_enter_new_book:
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    //Display the Id, Title, Author and Supplier by creating a Cursor that extracts that info
-    private void displayDatabaseInfo() {
+    //helper method for clearing the database
+    private void clearData() {
+        if (BookEntry.CONTENT_URI != null){
+            int rowsDeleted = getContentResolver().delete(BookEntry.CONTENT_URI, null, null);
+            Log.v(LOG_TAG, rowsDeleted + " books deleted from the database");
+        }
+    }
 
-        //Define a projection to display desired columns:
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int loaderId, @Nullable Bundle bundle) {
+        //Define a projection to pass in desired columns to the CursorLoader:
         String[] projection = {
                 BookEntry._ID,
                 BookEntry.COLUMN_PRODUCT_NAME,
                 BookEntry.COLUMN_BOOK_AUTHOR,
-                BookEntry.COLUMN_SUPPLIER
+                BookEntry.COLUMN_PRICE,
+                BookEntry.COLUMN_QUANTITY
         };
 
-        //Create a cursor using the projection above
-        Cursor cursor = getContentResolver().query(BookEntry.CONTENT_URI, projection, null, null, null);
-
-        //Identify the index of the 4 columns to display:
-        int idIndex = cursor.getColumnIndex(BookEntry._ID);
-        int titleIndex = cursor.getColumnIndex(BookEntry.COLUMN_PRODUCT_NAME);
-        int authorIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_AUTHOR);
-        int supplierIndex = cursor.getColumnIndex(BookEntry.COLUMN_SUPPLIER);
-
-        //Iterate through all the rows in the cursor and pull out the entries in the columns selected
-        while (cursor.moveToNext()) {
-            int currentId = cursor.getInt(idIndex);
-            String currentTitle = cursor.getString(titleIndex);
-            String currentAuthor = cursor.getString(authorIndex);
-            int currentSupplier = cursor.getInt(supplierIndex);
-
-            //Temporarily display these rows at the beneath the input form
-            mSummaryView.append(("\n" + currentId + " | " +
-                    currentTitle + " | " +
-                    currentAuthor + " | " +
-                    currentSupplier));
+        //If param matches LoaderID, create a new CursorLoader that will create a cursor off the main thread
+        switch (loaderId) {
+            case URL_LOADER:
+                return new CursorLoader(this, BookEntry.CONTENT_URI, projection, null, null, null);
+            default:
+                return null;
         }
 
-        cursor.close();
     }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
+        //swap out the current cursor
+        cursorAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        //delete the old cursor reference to prevent memory leaks
+        cursorAdapter.swapCursor(null);
+    }
+
+
 }

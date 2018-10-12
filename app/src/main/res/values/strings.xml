@@ -7,15 +7,25 @@
     <string name="phone_number">Phone Number:</string>
     <string name="supplier">Supplier:</string>
     <string name="price">Price:</string>
+    <string name="phone">Phone:</string>
+
+
     <!--Strings for supplier Spinner dropdown options-->
     <string name="supplier_other">Other</string>
     <string name="supplier_ebay">Ebay</string>
     <string name="supplier_amazon">Amazon</string>
     <string name="supplier_abes">Abe\'s Books</string>
-    <string name="menu_action_save">Save</string>
+
+    <!--Strings for Menu actions-->
+    <string name="menu_action_dummy_data">Insert dummy data</string>
+    <string name="menu_action_delete_books">Delete all books</string>
+    <string name="menu_action_new_book">Add a book</string>
+    <string name="menu_save">Save</string>
+
 
     <!--Strings for Toast messages-->
     <string name="editor_save_error_toast">Unable to save book</string>
     <string name="editor_book_saved_toast">Book saved</string>
+    <string name="item_quantity_Q">Q:</string>
 
 </resources>
