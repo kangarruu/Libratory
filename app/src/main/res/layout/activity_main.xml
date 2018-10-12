@@ -3,14 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <ListView
         android:id="@+id/book_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <RelativeLayout
         android:id="@+id/empty_view_parent"
@@ -22,17 +20,18 @@
             android:id="@+id/empty_view_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/main_image_margin_top"
-            android:src="@drawable/empty_view_image"/>
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/empty_view_image"
+            android:scaleType="fitCenter"
+            android:src="@drawable/empty_view_image" />
 
         <TextView
             android:id="@+id/empty_view_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Can't find your stuff?"
+            android:text="@string/empty_view_title_text"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/empty_view_image"
             android:textAppearance="?android:textAppearanceMedium"/>
@@ -41,7 +40,7 @@
             android:id="@+id/empty_view_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start by adding a new book"
+            android:text="@string/empty_view_subtitle_text"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/empty_view_title"
             android:textAppearance="?android:textAppearanceSmall"/>
@@ -53,8 +52,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_books" />
+        android:src="@drawable/ic_books"/>
 
 </RelativeLayout>

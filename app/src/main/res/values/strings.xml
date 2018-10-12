@@ -27,5 +27,14 @@
     <string name="editor_save_error_toast">Unable to save book</string>
     <string name="editor_book_saved_toast">Book saved</string>
     <string name="item_quantity_Q">Q:</string>
+    <string name="empty_view_subtitle_text">Start by adding a new book</string>
+    <string name="empty_view_title_text">Can\'t find your stuff?</string>
+
+    <!--Strings for content descriptons -->
+    <string name="quantity_increase_button_image">quantity increase button image</string>
+    <string name="quantity_decrease_button_image">quantity decrease button image</string>
+    <string name="sale_button_image">sale button image</string>
+    <string name="empty_view_image">empty view image</string>
+    <string name="phone_button_image">phone button image</string>
 
 </resources>

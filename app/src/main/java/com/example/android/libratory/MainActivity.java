@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -53,6 +54,13 @@ public class MainActivity extends AppCompatActivity implements
         //Set up the CursorAdapter to display items in the ListView
         cursorAdapter = new BookCursorAdapter(this, null, 0);
         bookListView.setAdapter(cursorAdapter);
+        bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                startActivity(intent);
+            }
+        });
 
         getSupportLoaderManager().initLoader(URL_LOADER, null, this);
     }
@@ -106,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements
 
     //helper method for clearing the database
     private void clearData() {
-        if (BookEntry.CONTENT_URI != null){
+        if (BookEntry.CONTENT_URI != null) {
             int rowsDeleted = getContentResolver().delete(BookEntry.CONTENT_URI, null, null);
             Log.v(LOG_TAG, rowsDeleted + " books deleted from the database");
         }
