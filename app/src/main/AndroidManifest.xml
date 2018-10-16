@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.libratory">
-
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,8 +22,17 @@
             android:authorities="com.example.android.libratory"
             android:exported="false" />
 
-        <activity android:name=".EditorActivity" />
-        <activity android:name=".DetailActivity"></activity>
+        <activity android:name=".EditorActivity"
+            android:parentActivityName=".MainActivity" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity" /></activity>
+        <activity android:name=".DetailActivity"
+            android:label="@string/detail_toolbar"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" /></activity>
     </application>
 
 </manifest>

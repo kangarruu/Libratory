@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/title_display_view"
                 app:layout_constraintStart_toStartOf="@+id/title_display_view"
@@ -41,6 +42,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -62,17 +64,32 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/detail_price_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/price"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
                 android:id="@+id/price_display_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_price_view"
                 tools:text="Price" />
         </android.support.constraint.ConstraintLayout>
 
@@ -93,27 +110,29 @@
             android:layout_height="match_parent">
 
             <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="21dp"
-                android:layout_height="24dp"
+                android:id="@+id/quantity_increment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
+                android:background="@android:color/transparent"
                 android:contentDescription="@string/quantity_increase_button_image"
-                android:src="@android:drawable/ic_menu_more"
+                android:src="@drawable/ic_increment"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/quantity_display_view"
                 app:layout_constraintTop_toBottomOf="@+id/detail_quantity_view" />
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/quantity_decrement"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
+                android:background="@android:color/transparent"
                 android:contentDescription="@string/quantity_decrease_button_image"
-                android:src="@android:drawable/ic_menu_more"
+                android:src="@drawable/ic_decrement"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/quantity_display_view"
                 app:layout_constraintTop_toBottomOf="@+id/detail_quantity_view" />
@@ -122,10 +141,11 @@
                 android:id="@+id/quantity_display_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
+                android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+                app:layout_constraintBottom_toBottomOf="@+id/quantity_decrement"
                 app:layout_constraintEnd_toEndOf="@+id/detail_quantity_view"
                 app:layout_constraintStart_toStartOf="@+id/detail_quantity_view"
-                app:layout_constraintTop_toTopOf="@+id/imageButton2"
+                app:layout_constraintTop_toTopOf="@+id/quantity_decrement"
                 tools:text="Quantity" />
 
             <TextView
@@ -138,9 +158,11 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/quantity"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
@@ -162,6 +184,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/phone"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
                 app:layout_constraintBottom_toBottomOf="@+id/supplier_phone_display_view"
                 app:layout_constraintStart_toStartOf="@+id/detail_supplier_view"
                 app:layout_constraintTop_toTopOf="@+id/supplier_phone_display_view" />
@@ -174,7 +197,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton3"
+                app:layout_constraintEnd_toStartOf="@+id/supplier_call_button"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/supplier_display_view"
                 app:layout_constraintTop_toBottomOf="@+id/supplier_display_view"
@@ -188,6 +211,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/supplier"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -198,23 +222,27 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton3"
+                app:layout_constraintEnd_toStartOf="@+id/supplier_call_button"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/detail_supplier_view"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Supplier Name" />
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/supplier_call_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/phone_button_image"
-                android:src="@android:drawable/stat_sys_speakerphone"
+                android:src="@drawable/ic_call"
                 app:layout_constraintBottom_toBottomOf="@+id/supplier_phone_display_view"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.92"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/supplier_display_view" />
         </android.support.constraint.ConstraintLayout>
 

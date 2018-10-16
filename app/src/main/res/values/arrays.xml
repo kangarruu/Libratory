@@ -2,8 +2,8 @@
 <resources>
     <string-array name="supplier_array">
         <item>@string/supplier_other</item>
-        <item>@string/supplier_amazon</item>
         <item>@string/supplier_ebay</item>
+        <item>@string/supplier_amazon</item>
         <item>@string/supplier_abes</item>
     </string-array>
 </resources>

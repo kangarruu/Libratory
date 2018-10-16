@@ -1,6 +1,12 @@
 <resources>
+    <!--ToolBar titles and app name-->
     <string name="app_name">Libratory</string>
-    <!--Labels for editText input fields -->
+    <string name="edit_toolbar">Edit Book</string>
+    <string name="detail_toolbar">Book Details</string>
+    <string name="add_toolbar">Add a Book</string>
+
+
+    <!--Labels and hints for editText input fields -->
     <string name="book_title">Book Title:</string>
     <string name="author">Author:</string>
     <string name="quantity">Quantity:</string>
@@ -8,6 +14,12 @@
     <string name="supplier">Supplier:</string>
     <string name="price">Price:</string>
     <string name="phone">Phone:</string>
+    <string name="book_title_hint">Book Title (Required)</string>
+    <string name="author_name_hint">Author Name (Required) </string>
+    <string name="price_hint">$ (Required) </string>
+    <string name="quantity_hint">Quantity (Required)</string>
+    <!--List_item quantity label-->
+    <string name="item_quantity_Q">Q:</string>
 
 
     <!--Strings for supplier Spinner dropdown options-->
@@ -16,17 +28,49 @@
     <string name="supplier_amazon">Amazon</string>
     <string name="supplier_abes">Abe\'s Books</string>
 
+    <!--Supplier phone numbers-->
+    <string name="amazon_phone">8882804331</string>
+    <string name="ebay_phone">8665403229</string>
+    <string name="abes_phone">7189876787</string>
+
+
     <!--Strings for Menu actions-->
     <string name="menu_action_dummy_data">Insert dummy data</string>
     <string name="menu_action_delete_books">Delete all books</string>
+    <string name="menu_action_delete_book">Delete book</string>
     <string name="menu_action_new_book">Add a book</string>
+    <string name="menu_action_edit_book">Edit book</string>
     <string name="menu_save">Save</string>
 
 
     <!--Strings for Toast messages-->
     <string name="editor_save_error_toast">Unable to save book</string>
     <string name="editor_book_saved_toast">Book saved</string>
-    <string name="item_quantity_Q">Q:</string>
+    <string name="editor_update_error_toast">Error updating book</string>
+    <string name="editor_book_updated_toast">Book updated</string>
+    <string name="editor_delete_error_toast">Error deleting book</string>
+    <string name="editor_book_delete_toast">Book deleted</string>
+    <string name="editor_title_required_toast">Please enter a book title</string>
+    <string name="editor_author_required_toast">Please enter an author</string>
+    <string name="editor_price_required_toast">Please enter book price</string>
+    <string name="editor_quantity_required_toast">Please enter quantity</string>
+
+    <!--Dialog messages for unsaved changes-->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="dialog_discard">Discard</string>
+    <string name="dialog_keep_editing">Keep Editing</string>
+
+    <!--Dialog messages for deleting book-->
+    <string name="delete_dialog_msg">Are you sure you want to delete this book?</string>
+    <string name="dialog_delete">Delete</string>
+    <string name="dialog_cancel">Cancel</string>
+
+    <!--Dialog messages for moving to editor-->
+    <string name="edit_book_dialog_msg">Edit or delete book details?</string>
+    <string name="dialog_cancel_edit">Cancel</string>
+    <string name="dialog_edit_book">Edit</string>
+
+    <!--Empty View text-->
     <string name="empty_view_subtitle_text">Start by adding a new book</string>
     <string name="empty_view_title_text">Can\'t find your stuff?</string>
 
@@ -36,5 +80,11 @@
     <string name="sale_button_image">sale button image</string>
     <string name="empty_view_image">empty view image</string>
     <string name="phone_button_image">phone button image</string>
+
+    <!--Dummy data-->
+    <string name="dummy_data_title">Our Dark Duet</string>
+    <string name="dummy_data_author">V.E. Schwab</string>
+
+
 
 </resources>
