@@ -42,14 +42,15 @@ public class EditorActivity extends AppCompatActivity implements android.support
     private EditText mPrice;
     private EditText mQuantity;
     private Spinner mSupplier;
+    private EditText mSupplierPhone;
 
     //Variables for saving user input
     private String titleString;
     private String authorString;
     private String priceString;
     private String quantityString;
-
-    private String supplierPhone;
+    private int supplierInt;
+    private String supplierPhoneString;
 
     double priceInt = 0;
     int quantityInt = 0;
@@ -64,6 +65,15 @@ public class EditorActivity extends AppCompatActivity implements android.support
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             mBookEntryChanged = true;
+            return false;
+        }
+    };
+
+    private boolean mSupplierPhoneChanged = false;
+    private View.OnTouchListener mPhoneChangeListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            mSupplierPhoneChanged = true;
             return false;
         }
     };
@@ -93,6 +103,8 @@ public class EditorActivity extends AppCompatActivity implements android.support
         mPrice = (EditText) findViewById(R.id.price_edit_view);
         mQuantity = (EditText) findViewById(R.id.quantity_edit_view);
         mSupplier = (Spinner) findViewById(R.id.supplier_spinner);
+        mSupplierPhone = (EditText) findViewById(R.id.supplier_phone_edit_view);
+
 
         //Set onTouchListener on each view to see if user clicked/began editing
         mBookTitle.setOnTouchListener(mTouchListener);
@@ -100,6 +112,8 @@ public class EditorActivity extends AppCompatActivity implements android.support
         mPrice.setOnTouchListener(mTouchListener);
         mQuantity.setOnTouchListener(mTouchListener);
         mSupplier.setOnTouchListener(mTouchListener);
+        mSupplierPhone.setOnTouchListener(mTouchListener);
+        mSupplierPhone.setOnTouchListener(mPhoneChangeListener);
 
         setupSpinner();
 
@@ -163,13 +177,19 @@ public class EditorActivity extends AppCompatActivity implements android.support
                 String supplierSelected = (String) parent.getItemAtPosition(position);
                 if (supplierSelected.equals(getString(R.string.supplier_ebay))) {
                     mSelectedSupplier = BookEntry.SUPPLIER_EBAY;
-                    supplierPhone = getString(R.string.ebay_phone);
+                    if (currentUri == null){
+                        mSupplierPhone.setText(R.string.ebay_phone);
+                    }
                 } else if (supplierSelected.equals(getString(R.string.supplier_amazon))) {
                     mSelectedSupplier = BookEntry.SUPPLIER_AMAZON;
-                    supplierPhone = getString(R.string.amazon_phone);
+                    if (currentUri == null){
+                        mSupplierPhone.setText(R.string.amazon_phone);
+                    }
                 } else if (supplierSelected.equals(getString(R.string.supplier_abes))) {
                     mSelectedSupplier = BookEntry.SUPPLIER_ABES_BOOKS;
-                    supplierPhone = getString(R.string.abes_phone);
+                    if (currentUri == null){
+                        mSupplierPhone.setText(R.string.abes_phone);
+                    }
                 } else {
                     mSelectedSupplier = BookEntry.SUPPLIER_ATYPICAL;
                 }
@@ -182,6 +202,7 @@ public class EditorActivity extends AppCompatActivity implements android.support
         });
     }
 
+
     //helper method for validating user data before saving to database
     private boolean isBookEntryComplete() {
 
@@ -190,6 +211,8 @@ public class EditorActivity extends AppCompatActivity implements android.support
         authorString = mBookAuthor.getText().toString().trim();
         priceString = mPrice.getText().toString().trim();
         quantityString = mQuantity.getText().toString().trim();
+        supplierPhoneString = mSupplierPhone.getText().toString().trim();
+
 
         //If EditText isn't empty, use the user's input, otherwise keep value at 0 to avoid a crash.
         if (!TextUtils.isEmpty(priceString)) {
@@ -220,6 +243,10 @@ public class EditorActivity extends AppCompatActivity implements android.support
         } else if (TextUtils.isEmpty(priceString)) {
             Toast.makeText(EditorActivity.this, R.string.editor_price_required_toast, Toast.LENGTH_SHORT).show();
             return false;
+            //validate supplier phone
+        } else if (TextUtils.isEmpty(supplierPhoneString)) {
+            Toast.makeText(EditorActivity.this, R.string.editor_supplier_phone_required_toast, Toast.LENGTH_SHORT).show();
+            return false;
         } else {
             return true;
         }
@@ -237,7 +264,10 @@ public class EditorActivity extends AppCompatActivity implements android.support
         values.put(BookEntry.COLUMN_PRICE, priceInt);
         values.put(BookEntry.COLUMN_QUANTITY, quantityInt);
         values.put(BookEntry.COLUMN_SUPPLIER, mSelectedSupplier);
-        values.put(BookEntry.COLUMN_SUPPLIER_PHONE, supplierPhone);
+        if (mSupplierPhoneChanged){
+            supplierPhoneString = mSupplierPhone.getText().toString().trim();
+        }
+        values.put(BookEntry.COLUMN_SUPPLIER_PHONE, supplierPhoneString);
 
 
         if (currentUri == null) {
@@ -365,7 +395,8 @@ public class EditorActivity extends AppCompatActivity implements android.support
                 BookEntry.COLUMN_BOOK_AUTHOR,
                 BookEntry.COLUMN_PRICE,
                 BookEntry.COLUMN_QUANTITY,
-                BookEntry.COLUMN_SUPPLIER
+                BookEntry.COLUMN_SUPPLIER,
+                BookEntry.COLUMN_SUPPLIER_PHONE
         };
 
         return new CursorLoader(this, currentUri, projection, null, null, null);
@@ -386,12 +417,14 @@ public class EditorActivity extends AppCompatActivity implements android.support
             double editPrice = cursor.getDouble(cursor.getColumnIndex(BookEntry.COLUMN_PRICE));
             int editQuantity = cursor.getInt(cursor.getColumnIndex(BookEntry.COLUMN_QUANTITY));
             int editSupplier = cursor.getInt(cursor.getColumnIndex(BookEntry.COLUMN_SUPPLIER));
+            String supplierPhoneString = cursor.getString(cursor.getColumnIndex(BookEntry.COLUMN_SUPPLIER_PHONE));
 
             //Set values on the editorActivity EditViews
             mBookTitle.setText(editTitle);
             mBookAuthor.setText(editAuthor);
             mPrice.setText((String.valueOf(editPrice)));
             mQuantity.setText(String.valueOf(editQuantity));
+            mSupplierPhone.setText(supplierPhoneString);
 
             switch (editSupplier) {
                 case BookEntry.SUPPLIER_EBAY:
@@ -418,6 +451,7 @@ public class EditorActivity extends AppCompatActivity implements android.support
         mPrice.getText().clear();
         mQuantity.getText().clear();
         mSupplier.setSelection(0);
+        mSupplierPhone.getText().clear();
     }
 
 

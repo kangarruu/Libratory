@@ -99,7 +99,10 @@ public class DetailActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", displaySupplierPhone, null));
-                startActivity(intent);
+                if(intent.resolveActivity(getPackageManager()) != null){
+                    startActivity(intent);
+                }
+
             }
 
 

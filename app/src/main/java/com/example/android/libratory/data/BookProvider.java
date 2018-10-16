@@ -126,6 +126,10 @@ public class BookProvider extends ContentProvider {
         if (supplier == null || !BookEntry.isSupplierValid(supplier)) {
             throw new IllegalArgumentException("Book requires valid supplier");
         }
+        String supplierPhone = values.getAsString(BookEntry.COLUMN_SUPPLIER_PHONE);
+        if (supplierPhone == null) {
+            throw new IllegalArgumentException("Book requires supplier phone number");
+        }
 
         //Get writeable database to insert into
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -201,6 +205,13 @@ public class BookProvider extends ContentProvider {
             Integer supplier = values.getAsInteger(BookEntry.COLUMN_SUPPLIER);
             if (supplier == null || !BookEntry.isSupplierValid(supplier)) {
                 throw new IllegalArgumentException("Book requires valid supplier");
+            }
+        }
+
+        if (values.containsKey((BookEntry.COLUMN_SUPPLIER_PHONE))) {
+            String supplierPhone = values.getAsString(BookEntry.COLUMN_SUPPLIER_PHONE);
+            if (supplierPhone == null) {
+                throw new IllegalArgumentException("Book requires supplier phone number");
             }
         }
 

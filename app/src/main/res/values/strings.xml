@@ -54,6 +54,8 @@
     <string name="editor_author_required_toast">Please enter an author</string>
     <string name="editor_price_required_toast">Please enter book price</string>
     <string name="editor_quantity_required_toast">Please enter quantity</string>
+    <string name="editor_supplier_phone_required_toast">Please supplier phone number</string>
+
 
     <!--Dialog messages for unsaved changes-->
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
